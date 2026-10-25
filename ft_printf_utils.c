@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                       :::      ::::::::    */
+/*   ft_printf_utils.c                                 :+:      :+:    :+:    */
+/*                                                   +:+ +:+         +:+      */
+/*   By: fstute <fstute@student.42wolfsburg.de>    #+#  +:+       +#+         */
+/*                                               +#+#+#+#+#+   +#+            */
+/*   Created: 2026/10/25 16:30:19 by fstute           #+#    #+#              */
+/*   Updated: 2026/10/25 16:41:35 by fstute          ###   ########.fr        */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_printf.h"
 
 int	ft_putchar(char c)
@@ -48,6 +60,24 @@ int	ft_putnbr(long nb)
 	return (len + 1);
 }
 
+int	ft_putnbr_unsigned(unsigned int nb)
+{
+	int	len;
+	int	ret;
+
+	len = 0;
+	if (nb > 9)
+	{
+		ret = ft_putnbr_unsigned(nb / 10);
+		if (ret == -1)
+			return (-1);
+		len += ret;
+	}
+	if (ft_putchar(nb % 10 + '0') == -1)
+		return (-1);
+	return (len + 1);
+}
+
 int	ft_putnbr_hexa(unsigned long nbr, char type)
 {
 	char	*base;
@@ -73,15 +103,15 @@ int	ft_putnbr_hexa(unsigned long nbr, char type)
 
 int	ft_putptr(void *ptr)
 {
-	int	len;
-	int	ret;
+	int				len;
+	int				ret;
+	unsigned long	address;
 
-	if (!ptr)
-		return (ft_putstr("(nil)"));
+	address = (unsigned long) ptr;
 	len = ft_putstr("0x");
 	if (len == -1)
 		return (-1);
-	ret = ft_putnbr_hexa((unsigned long)ptr, 'x');
+	ret = ft_putnbr_hexa(address, 'x');
 	if (ret == -1)
 		return (-1);
 	return (len + ret);
