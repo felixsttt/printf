@@ -20,7 +20,6 @@ int	ft_printf(char const *str, ...);
 int	ft_putchar(char c);
 int	ft_putstr(char *str);
 int	ft_putnbr(long nb);
-int	ft_putnbr_unsigned(unsigned int nb);
 int	ft_putnbr_hexa(unsigned long nbr, char type);
 int	ft_putptr(void *ptr);
 

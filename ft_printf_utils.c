@@ -60,24 +60,6 @@ int	ft_putnbr(long nb)
 	return (len + 1);
 }
 
-int	ft_putnbr_unsigned(unsigned int nb)
-{
-	int	len;
-	int	ret;
-
-	len = 0;
-	if (nb > 9)
-	{
-		ret = ft_putnbr_unsigned(nb / 10);
-		if (ret == -1)
-			return (-1);
-		len += ret;
-	}
-	if (ft_putchar(nb % 10 + '0') == -1)
-		return (-1);
-	return (len + 1);
-}
-
 int	ft_putnbr_hexa(unsigned long nbr, char type)
 {
 	char	*base;

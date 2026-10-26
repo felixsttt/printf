@@ -1,0 +1,82 @@
+*This project has been created as part of the 42 curriculum by fstute.*
+
+# ft_printf
+
+## Description
+
+`ft_printf` is a C library that recreates the mandatory part of the standard C `printf` function. It reads a format string, prints ordinary characters directly, and replaces supported conversion specifiers with values from the variadic argument list.
+
+The mandatory conversions are:
+
+- `%c`: character
+- `%s`: string
+- `%p`: pointer in hexadecimal
+- `%d` and `%i`: signed decimal integer
+- `%u`: unsigned decimal integer
+- `%x`: lowercase hexadecimal integer
+- `%X`: uppercase hexadecimal integer
+- `%%`: percent sign
+
+The function returns the number of characters written, or `-1` if a write fails.
+
+## Instructions
+
+Run `make` from the directory containing the Makefile:
+
+```sh
+make
+```
+
+This creates `libftprintf.a` in the repository root.
+
+To compile a program that uses the library:
+
+```sh
+cc -Wall -Wextra -Werror main.c -L. -lftprintf -o test
+```
+
+Run the program with:
+
+```sh
+./test
+```
+
+Use `make clean` to remove object files, `make fclean` to remove object files and the library, and `make re` to rebuild the library.
+
+Example:
+
+```c
+#include "ft_printf.h"
+
+int	main(void)
+{
+	ft_printf("Hello, %s! The answer is %d.\n", "42", 42);
+	return (0);
+}
+```
+
+## Algorithm and data structure
+
+The main algorithm scans the format string from left to right using a pointer to the current character.
+
+- If the current character is not `%`, it is written directly.
+- If it is `%`, the next character identifies the conversion. The conversion handler retrieves the next argument with `va_arg` using the appropriate type and calls the matching output function.
+- Each output function returns the number of characters it wrote. `ft_printf` adds these values to a total and returns that total when it reaches the end of the format string.
+- If a write fails, the error is passed back and `ft_printf` returns `-1`.
+
+The implementation does not create a separate output buffer. It uses a pointer to the format string and a `va_list` to process the arguments, then writes output directly. This keeps the data structures simple and avoids allocating memory for the output. Decimal and hexadecimal numbers are printed recursively by dividing by the relevant base and writing the remainders.
+
+## Resources
+
+- `printf(3)` manual: [https://man7.org/linux/man-pages/man3/printf.3.html]
+- `stdarg(3)` manual: [https://man7.org/linux/man-pages/man3/stdarg.3.html]
+- `write(2)` manual: [https://man7.org/linux/man-pages/man2/write.2.html]
+- 42 Norminette: [https://github.com/42School/norminette]
+
+AI assistance was used to suggest debugging steps, and prepare test cases.
+
+## Limitations
+
+This implementation covers the mandatory conversions only. Bonus flags and field widths are not implemented.
+
+The current pointer function prints a null pointer as `0x0`. Null-pointer formatting can vary between systems, so this behavior should be checked against the evaluator's expected output.
